@@ -132,6 +132,7 @@ select(starwars, name, mass : species)
 # ----- Practise 17 ----- #
 "Keep all variables except birth_year and gender"
 select(starwars, !birth_year & !gender)
+# select(starwars, -birth_year, -gender)
 
 
 # ----- Practise 18 ----- #
