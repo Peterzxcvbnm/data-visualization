@@ -5,11 +5,14 @@ using Camille.Enums;
 using Camille.RiotGames;
 using DataCollector;
 
-const string outputPath = "./output/data.json";
+const string outputDir = "./output";
+const string outputPath = outputDir + "/data.json";
 
 var riotApi = InitializeAPI(args);
 
 var initialSummoner = await riotApi.SummonerV4().GetBySummonerNameAsync(PlatformRoute.EUW1, "Peterzxcvbnm");
+
+Directory.CreateDirectory(outputDir);
 
 var data = File.Exists(outputPath) ? 
     JsonSerializer.Deserialize<DataStructure>(await File.ReadAllTextAsync(outputPath)) : new DataStructure();
@@ -24,6 +27,11 @@ while (data.SummonerIds.TryDequeue(out var id))
     await GetMatches(matchIds, data, riotApi);
 
     data.UsedSummonerIds.Add(id);
+    
+    Console.WriteLine("Writing data collected so far to file");
+    await File.WriteAllTextAsync(outputPath, JsonSerializer.Serialize(data));
+
+    if (data.Matches.Count > 10000) break;
 }
 
 await File.WriteAllTextAsync(outputPath, JsonSerializer.Serialize(data));
@@ -64,7 +72,7 @@ async Task<Queue<string>> GetMatchIdsByPUUID(RiotGamesApi riotApi1, string id)
             Queue.SUMMONERS_RIFT_5V5_RANKED_SOLO,
             DateTimeOffset.Now.AddDays(-7).ToUnixTimeSeconds(),
             index);
-        foreach (var matchId in queue)
+        foreach (var matchId in matches)
         {
             queue.Enqueue(matchId);
         }
@@ -91,5 +99,13 @@ async Task GetMatches(Queue<string> matchIds, DataStructure dataStructure, RiotG
         var match = await riotGamesApi1.MatchV5().GetMatchAsync(RegionalRoute.EUROPE, matchid);
         dataStructure.Matches.Add(matchid, match);
         Console.WriteLine($"Got match: {matchid}");
+        foreach (var puuid in match.Info.Participants.Select(p => p.Puuid))
+        {
+            if (!dataStructure.UsedSummonerIds.Contains(puuid))
+            {
+                Console.WriteLine($"Adding {puuid} to summoner queue");
+                dataStructure.SummonerIds.Enqueue(puuid);
+            }
+        }
     }
 }
