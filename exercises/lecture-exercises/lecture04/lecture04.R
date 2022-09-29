@@ -45,8 +45,8 @@ help(sqrt)
 generates 100 random numbers and plots them, and run
 this script several times (you can also use
 source('firstscript.R') in the console command)."
-setwd("E:/OneDrive - Syddansk Universitet/Universitet SDU/Software Engineering 3. semester (MSc)/Data Visualization/R-exercices/lecture-exercises")
-source("lecture04-firstscript.R")
+#setwd("E:/OneDrive - Syddansk Universitet/Universitet SDU/Software Engineering 3. semester (MSc)/Data Visualization/R-exercices/lecture-exercises")
+#source("lecture04-firstscript.R")
 
 
 # ----- Practise 8 ----- #
