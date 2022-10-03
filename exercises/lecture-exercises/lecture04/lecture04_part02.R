@@ -5,6 +5,7 @@ library(dplyr)
 library(mosaicData)
 library(gapminder)
 library(maps)
+library(readxl)
 
 # ----- Practise 1 ----- #
 "Use mpg data and produce the following graph: - see slide 11"
@@ -98,6 +99,9 @@ ggplot(economics,
        aes(x = date, y = unemploy)) +
        geom_line()
 
+ggplot(economics) +
+       geom_line(x = date, y = unemploy)
+
 
 # ----- Practise 7 ----- #
 "Use the gapminder package to assemble a new data set named asia to
@@ -109,6 +113,10 @@ gapminder_asia <- gapminder %>%
 ggplot(gapminder_asia,
        aes(x = year, y = gdpPercap)) +
        geom_line()
+
+asia <- read_excel("../../datasets/asia.xlsx")
+ggplot(asia) +
+       geom_line(x = year, y = gdpPercap)
 
 "The graph shows that the Asian countries becomes richer and richer."
 "The graph is whipsawing (can be seen if it displayed as line graph."
@@ -129,7 +137,10 @@ In the code below, you can map group to the grouping variable country to
 create a separate line for each country. Try it. Be sure to place the group
 mapping inside of aes()."
 ggplot(gapminder_asia) +
-       geom_line(aes(x = year, y = gdpPercap, group = country))
+       geom_line(aes(x = year, y = gdpPercap,
+                     group = country,
+                     color = country,
+                     linetype = country), size = 3)
 
 
 # ----- Practise 9 ----- #
@@ -145,3 +156,25 @@ ggplot(fl) +
 f2 <- map_data("state", region = "new york")
 ggplot(f2) +
     geom_polygon(mapping = aes(x = long, y = lat))
+
+
+# ----- Practise 10 ----- #
+"Semi-transparent
+Try this now. Set the points to an alpha of 0.25, which will make each point
+25% opague (i.e. four points staked on top of each other will create a solid
+black)"
+ggplot(mpg) +
+       geom_point(aes(x = displ, y = hwy))
+
+ggplot(mpg) +
+       geom_point(aes(x = displ, y = hwy), alpha = 0.25)
+"This only allows for 4 'visible' points on the same point"
+
+
+# ----- Practise 11 ----- #
+"Adjusting the position
+position = 'jitter' adds a small amount of random noise to the location of each point.
+Since the noise is random, it is unlikely that two points
+rounded to the same location will also be jittered to the same location."
+ggplot(mpg) +
+       geom_point(aes(x = displ, y = hwy), position = "jitter")
