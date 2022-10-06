@@ -1,0 +1,11 @@
+name: shinyapps-demo
+title:
+username:
+account: troelszink
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 7229546
+bundleId: 6375471
+url: https://troelszink.shinyapps.io/shinyapps-demo/
+when: 1665057955.87483
+lastSyncTime: 1665057955.87488
