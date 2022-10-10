@@ -40,8 +40,8 @@ server <- function(input, output) {
     ggplot(
       filter(dat, ideo5 == input$five_point_ideology), 
       aes(x = factor(pid7))) +
-      geom_bar(color = "black") +
-      scale_x_discrete(breaks = dat$pid7, labels = dat$pid7) +
+      geom_histogram(mapping = aes(pid7), bins = 7, color = "black", fill = "gray") +
+      scale_x_continuous(breaks = dat$pid7) +
       xlab("7 Point Party ID, 1 = very D, 7 = very R") +
       ylab("Count")
   })
