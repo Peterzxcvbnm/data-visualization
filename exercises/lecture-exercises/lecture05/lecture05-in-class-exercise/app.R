@@ -12,10 +12,10 @@ dat <- drop_na(dat)
 
 # Define UI for application that draws a figure
 ui <- fluidPage(
-  
+
   # Application title
   titlePanel(""),
-  
+
   # Sidebar with a slider input for number of bins 
   sidebarLayout(
     sidebarPanel(
