@@ -1,0 +1,19 @@
+Paramaters:
+gameId: Key for data entry
+gameDuration: Total duration of game in seconds
+assists: 
+championName
+deaths
+goldEarned
+kills
+teamId: Blue/Red
+teamPosition: TOP, MID, JUNGLE, BOT, UTILITY (Support)
+totalDamageDealt
+visionScore: Riot specific measure of utilization of wards / removal of enemy wards (https://leagueoflegends.fandom.com/wiki/Vision_score)
+wardsKilled
+wardsPlaced
+win
+
+
+8 Graphs (min 3 different):
+
