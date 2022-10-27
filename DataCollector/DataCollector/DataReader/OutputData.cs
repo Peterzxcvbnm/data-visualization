@@ -18,4 +18,5 @@ public class OutputData
     public int wardsPlaced { get; set; }
     public bool win { get; set; }
     public long gameId { get; set; }
+    public int totalMinionsKilled { get; set; }
 }

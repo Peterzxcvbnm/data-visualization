@@ -30,7 +30,8 @@ var selectVariables = data.Matches.Values.SelectMany(m =>
             totalDamageDealt = p.TotalDamageDealt,
             visionScore = p.VisionScore,
             wardsKilled = p.WardsKilled,
-            wardsPlaced = p.WardsPlaced
+            wardsPlaced = p.WardsPlaced,
+            totalMinionsKilled = p.TotalMinionsKilled,
         })
         .ToList();
 });
