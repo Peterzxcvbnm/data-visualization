@@ -30,10 +30,22 @@ data_frame_deaths = data_frame %>%
 print(data_frame_deaths)
 
 plot(data_frame_deaths$visionScoreDiff, data_frame_deaths$deaths,
-        type = "l",
         xlab = "visionScoreDiff",
         ylab = "Deaths",
         main = "Deaths by vision score diff")
 
-# plotting number of times champions have been used
+
+# game time vs visionScore
+
+plot(data_frame$visionScore, data_frame$gameDuration,
+     xlab = "visionScore",
+     ylab = "Game Duration",
+     main = "Game Duration to VisionScore")
+
+# game time vs deaths,
+
+plot(data_frame$deaths, data_frame$gameDuration,
+     xlab = "Deaths",
+     ylab = "Game Duration",
+     main = "Game Duration to deaths")
 
