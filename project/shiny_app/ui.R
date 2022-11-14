@@ -16,7 +16,8 @@ ui <- fluidPage(
     
     # Show a plot of the generated distribution
     mainPanel(
-      plotOutput("violin_kills_assists_diff")
+      plotOutput("violin_kills_assists_diff"),
+      plotOutput("vision_score_distribution")
     )
   )
 )

@@ -29,8 +29,8 @@ data_frame = data_frame %>%
 
 print(data_frame)
 
-plot(data_frame$visionScoreDiff, data_frame$winrate,
-        type = "l",
+plot.default(data_frame$visionScoreDiff, data_frame$winrate,
+        type = "o",
         xlab = "visionScoreDiff",
         ylab = "Winrate",
         main = "Winrate by vision score diff")
