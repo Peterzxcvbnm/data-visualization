@@ -59,7 +59,22 @@ for (row in 1:nrow(data_sorted))
 data_mutated <- data.frame(game_id, game_duration, team_id,
                            vision_score_total, wards_killed_total, wards_placed_total,
                            win)
-data_mutated
+#data_mutated
+
+
+# remove irrelevant data points
+data_filtered <- data_mutated %>% filter(game_duration > 240)
+#data_filtered
+#data_filtered2 <- data_filtered[order(nrow(data_filtered):1), ]
+#data_filtered2
+
+
+# making intervals
+length_of_intervals <- 60
+data_intervals <- data_filtered %>% mutate(interval_index = 
+                                  floor((data_filtered$game_duration - min(data_filtered$game_duration)) / length_of_intervals) + 1)
+data_intervals
+
 
 # removing duplicates based on gameId
 #data_team <- data_sorted[!duplicated(data_sorted[, c('gameId')]),]
@@ -67,15 +82,35 @@ data_mutated
 
 
 # animation
-plot <- ggplot(data_mutated, aes(x = wards_killed_total, y = wards_placed_total, size = vision_score_total, colour = win)) +
-          geom_point(alpha = 0.7, show.legend = TRUE) +
-          scale_size(range = c(2, 12)) +
+"plot <- ggplot(data_intervals, aes(x = wards_killed_total, y = wards_placed_total, size = vision_score_total, colour = win)) +
+#plot <- ggplot(data_intervals, aes(x = game_duration, y = vision_score_total, colour = win)) +
+         geom_point(alpha = 0.7, show.legend = TRUE) +
+          scale_size(range = c(1, 10)) +
           # Here comes the gganimate specific bits
-          labs(title = 'Game duration [s]: {frame_time}', x = 'Wards placed', y = 'Wards killed') +
-          transition_time(game_duration) +
-          ease_aes('linear')
+          labs(title = 'Game duration [s]: {frame_time}',
+               x = 'Wards killed', y = 'Wards placed') +
+          transition_time(as.integer(interval_index)) +
+          ease_aes('linear')"
+#plot
 
-animate(plot, duration = 100, fps = 20)
+#{frame_time * data_intervals[1]$game_duration}-{frame_time * data_intervals[nrows(data_intervals)]$game_duration}
+
+last_value <- data_intervals[nrow(data_intervals), 2]
+
+# https://stackoverflow.com/questions/53092216/any-way-to-pause-at-specific-frames-time-points-with-transition-reveal-in-gganim/53093389
+plot <- ggplot(data_intervals, aes(x = game_duration, y = vision_score_total, group = win, color = win)) + 
+  geom_line() + 
+  geom_segment(aes(xend = last_value, yend = vision_score_total), linetype = 2, colour = 'grey') + 
+  geom_point(size = 2) + 
+  geom_text(aes(x = last_value, label = win), hjust = 0) + 
+  transition_reveal(game_duration) +
+  coord_cartesian(clip = 'off') + 
+  labs(x = 'Game duration [s]', y = 'Team vision score') + 
+  theme_minimal()
+  #theme(plot.margin = margin(5.5, 40, 5.5, 5.5))    
+
+#plot
+animate(plot, duration = 60, fps = 10)
 
 
 # sum up visionScore, wardsKilled, wardsPlaced (separately) per game
