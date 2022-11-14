@@ -29,23 +29,35 @@ data_frame_deaths = data_frame %>%
 
 print(data_frame_deaths)
 
-plot(data_frame_deaths$visionScoreDiff, data_frame_deaths$deaths,
+plot.default(data_frame_deaths$visionScoreDiff, data_frame_deaths$deaths,
         xlab = "visionScoreDiff",
         ylab = "Deaths",
-        main = "Deaths by vision score diff")
+        main = "Deaths by vision score diff",
+        col.lab = "darkgreen", col.main = "darkgreen",
+        col.axis = "darkgreen", col = "black", pch = 19
+        
+        )
 
 
 # game time vs visionScore
 
-plot(data_frame$visionScore, data_frame$gameDuration,
-     xlab = "visionScore",
-     ylab = "Game Duration",
-     main = "Game Duration to VisionScore")
+plot(data_frame$gameDuration, data_frame$visionScore,
+     ylab = "visionScore",
+     xlab = "Game Duration",
+     main = "Game Duration to VisionScore",
+     col.lab = "darkgreen", col.main = "darkgreen",
+     col.axis = "darkgreen")
+abline(reg = lm(data_frame$visionScore ~ data_frame$gameDuration), col = "blue")
+
+
 
 # game time vs deaths,
 
-plot(data_frame$deaths, data_frame$gameDuration,
-     xlab = "Deaths",
-     ylab = "Game Duration",
-     main = "Game Duration to deaths")
+plot(data_frame$gameDuration, data_frame$deaths,
+     ylab = "Deaths",
+     xlab = "Game Duration",
+     main = "Game Duration to deaths",
+     col.lab = "darkgreen", col.main = "darkgreen",
+     col.axis = "darkgreen")
+abline(reg = lm(data_frame$deaths ~ data_frame$gameDuration), col = "blue")
 
