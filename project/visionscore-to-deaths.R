@@ -29,13 +29,10 @@ data_frame_deaths = data_frame %>%
 
 print(data_frame_deaths)
 
-plot.default(data_frame_deaths$visionScoreDiff, data_frame_deaths$deaths,
+qplot(data_frame_deaths$visionScoreDiff, data_frame_deaths$deaths,
         xlab = "visionScoreDiff",
         ylab = "Deaths",
         main = "Deaths by vision score diff",
-        col.lab = "darkgreen", col.main = "darkgreen",
-        col.axis = "darkgreen", col = "black", pch = 19
-        
         )
 
 
