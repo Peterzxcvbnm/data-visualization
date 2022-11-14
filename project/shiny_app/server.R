@@ -1,10 +1,22 @@
-server <- function(input, output) {
+# libraries
+library(shiny)
+library(dplyr)
+library(ggplot2)
+library(tidyverse)
 
+# loading the data
+data <- read.csv("project/selected-data.csv", sep = ",")
+data_frame <- as.data.frame(data)
+data_frame = data_frame %>%
+    filter(teamPosition != "") %>%
+    filter(gameDuration > 240)
+data_frame$teamPosition = factor(data_frame$teamPosition, levels = c("TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY"))
+
+server <- function(input, output) {
   output$violin_kills_assists_diff <- renderPlot({
     data = data_frame %>%
-        mutate(kill_assist_diff = kills - assists)
-
-    data$teamPosition = factor(data$teamPosition, levels = c("TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY"))
+      mutate(kill_assist_diff = kills - assists) %>%
+      filter(teamPosition %in% input$positions_selected)
 
     ggplot(data, aes(x = teamPosition, y = kill_assist_diff, fill = win)) +
         geom_violin(position = position_dodge(1)) +
@@ -14,44 +26,44 @@ server <- function(input, output) {
   })
 
   output$vision_score_distribution <- renderPlot({
+    data = data_frame %>%
+      filter(teamPosition %in% input$positions_selected)
+
     ggplot(data, aes(x = visionScore, group = win, fill = win)) +
       geom_density(adjust = 1.5, alpha = .4)
   })
 
-  output$wards_killed_by_position <- renderPlot({
-    data = data_frame
-    data$teamPosition = factor(data$teamPosition, levels = c("TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY"))
+  output$wards_placed_by_position <- renderPlot({
+    data = data_frame %>%
+      filter(teamPosition %in% input$positions_selected) %>%
+      group_by(teamPosition, win) %>%
+      summarise(wardsKilled = mean(wardsKilled), wardsPlaced = mean(wardsPlaced))
 
-    data = data %>%
-    group_by(teamPosition, win) %>%
-    summarise(wardsKilled = mean(wardsKilled), wardsPlaced = mean(wardsPlaced))
-
-    plot = ggplot(data, aes(x = teamPosition, y = ifelse(win == "True", wardsKilled, - wardsKilled), fill = win)) +
-    geom_bar(stat = "identity", position = "identity") +
-    scale_y_continuous(limits = c(-max(data$wardsKilled), max(data$wardsKilled))) +
-    labs(title = "Wards killed", x = "Position", y = "Wards killed") + # nolint
+    ggplot(data, aes(x = teamPosition, y = ifelse(win == "True", wardsPlaced, - wardsPlaced), fill = win)) +
+      geom_bar(stat = "identity", position = "identity") +
+      scale_y_continuous(limits = c(-max(data$wardsPlaced), max(data$wardsPlaced))) +
+      labs(title = "Wards placed", x = "Position", y = "Wards placed") + # nolint
     theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 15)) +
-    coord_flip()
+      coord_flip()
   })
 
-  output$wards_placed_by_position <- renderPlot({
-    data = data_frame
-    data$teamPosition = factor(data$teamPosition, levels = c("TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY"))
+  output$wards_killed_by_position <- renderPlot({
+    data = data_frame %>%
+      filter(teamPosition %in% input$positions_selected) %>%
+      group_by(teamPosition, win) %>%
+      summarise(wardsKilled = mean(wardsKilled), wardsPlaced = mean(wardsPlaced))
 
-    data = data %>%
-    group_by(teamPosition, win) %>%
-    summarise(wardsKilled = mean(wardsKilled), wardsPlaced = mean(wardsPlaced))
-
-    plot2 = ggplot(data_frame, aes(x = teamPosition, y = ifelse(win == "True", wardsPlaced, - wardsPlaced), fill = win)) +
-    geom_bar(stat = "identity", position = "identity") +
-    scale_y_continuous(limits = c(-max(data_frame$wardsPlaced), max(data_frame$wardsPlaced))) +
-    labs(title = "Wards placed", x = "Position", y = "Wards placed") + # nolint
+    ggplot(data, aes(x = teamPosition, y = ifelse(win == "True", wardsKilled, - wardsKilled), fill = win)) +
+      geom_bar(stat = "identity", position = "identity") +
+      scale_y_continuous(limits = c(-max(data$wardsKilled), max(data$wardsKilled))) +
+      labs(title = "Wards killed", x = "Position", y = "Wards killed") + # nolint
     theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 15)) +
-    coord_flip()
+      coord_flip()
   })
 
   output$vision_score_by_wins = renderPlot({
     data = data_frame %>%
+      filter(teamPosition %in% input$positions_selected) %>%
       group_by(gameId, teamId) %>%
       summarise(visionScore = mean(visionScore), win = first(win)) %>%
       group_by(gameId) %>%
