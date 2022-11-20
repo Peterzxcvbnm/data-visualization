@@ -105,7 +105,7 @@ plot <- ggplot(data_intervals, aes(x = game_duration, y = vision_score_total, gr
   geom_text(aes(x = last_value, label = win), hjust = 0) + 
   transition_reveal(game_duration) +
   coord_cartesian(clip = 'off') + 
-  labs(x = 'Game duration [s]', y = 'Team vision score') + 
+  labs(title = 'Team vision score through time - victory vs. defeat', x = 'Game duration [s]', y = 'Team vision score') + 
   theme_minimal()
   #theme(plot.margin = margin(5.5, 40, 5.5, 5.5))    
 
