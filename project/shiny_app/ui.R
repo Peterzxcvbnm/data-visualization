@@ -18,7 +18,15 @@ ui <- fluidPage(
                   "Select positions:",
                   c("TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY"),
                   multiple = TRUE,
-                  selected = c("TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY"))
+                  selected = c("TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY")),
+      selectInput("champion_pick_lane",
+                  "Lane:",
+                  c("TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY"),
+                  multiple = FALSE,
+                  selected = c("MIDDLE")),
+      textInput("champion_pick",
+                "Champion:",
+                "Ahri")
     ),
 
 # Show a plot of the generated distribution
@@ -27,8 +35,8 @@ ui <- fluidPage(
       plotOutput("vision_score_distribution"),
       plotOutput("wards_placed_by_position"),
       plotOutput("wards_killed_by_position"),
-      plotOutput("vision_score_by_wins")
-
+      plotOutput("vision_score_by_wins"),
+      plotOutput("best_champion_pick")
     )
   )
 )
