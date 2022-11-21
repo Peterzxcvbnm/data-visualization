@@ -29,7 +29,7 @@ data_frame_deaths = data_frame %>%
 
 print(data_frame_deaths)
 
-qplot(data_frame_deaths$visionScoreDiff, data_frame_deaths$deaths,
+qplot(data_frame_deaths$visionScoreDiff, data_frame_deaths$deaths, group = 1, geom=c("point", "line"),
         xlab = "visionScoreDiff",
         ylab = "Deaths",
         main = "Deaths by vision score diff",

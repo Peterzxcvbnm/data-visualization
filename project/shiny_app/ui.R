@@ -36,6 +36,7 @@ ui <- fluidPage(
       plotOutput("wards_placed_by_position"),
       plotOutput("wards_killed_by_position"),
       plotOutput("vision_score_by_wins"),
+      plotOutput("vision_score_by_deaths"),
       plotOutput("best_champion_pick")
     )
   )
