@@ -21,7 +21,22 @@ ui <- fluidPage(
                   selected = c("TOP")),
       textInput("champion_pick",
                 "Champion:",
-                "Aatrox")
+                "Aatrox"),
+      selectInput("animation_y_value",
+                  "Stat:",
+                  c("assists", "deaths", "goldEarned", "kills", "totalDamageDealt", "visionScore", "wardsKilled", "wardsPlaced", "totalMinionsKilled"),
+                  multiple = FALSE,
+                  selected = c("assists")),
+      sliderInput("animation_length_of_intervals",
+                  "Length of intervals [s]:",
+                  min = 60,
+                  max = 600,
+                  value = 120,
+                  step = 30),
+       actionButton(
+        inputId = "submit_animation",
+        label = "Submit animation properties"
+      )
     ),
 
 # Show a plot of the generated distribution
@@ -43,6 +58,7 @@ ui <- fluidPage(
       plotOutput("teamid_teamposition_win"),
       plotOutput("wards_Killed_violinPlot"),
       plotOutput("wards_Placed_violinPlot"),
+      plotOutput("animation_plot")
     )
   )
 )
