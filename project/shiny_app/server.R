@@ -108,4 +108,8 @@ server <- function(input, output) {
       geom_col(aes(winRate, name), width = 0.5)
     plt
   })
+  
+  output$top_champion_winrate = renderPlot({
+    
+  })
 }

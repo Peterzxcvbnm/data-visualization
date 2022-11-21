@@ -12,11 +12,8 @@ df <- df[df$gameDuration >= 240,] # outliers. The ones ending in a draw
 df$win <- as.logical(df$win)
 
 df_grouped <- df %>% group_by(gameId) %>% filter(any(championName==championVariable && teamPosition == teamPositionVariable)) %>% filter(teamPosition == teamPositionVariable)
-df_grouped
 df_grouped <- df_grouped[df_grouped$championName != championVariable,]
-df_grouped
 df_grouped <- df_grouped %>% ungroup() %>% group_by(championName) %>% summarise(wins = sum(win, na.rm = TRUE), totalGames = n(), winRate = 1- (sum(win, na.rm = TRUE) / n()))
-df_grouped
 df_grouped = df_grouped[order(df_grouped$winRate), ]
 
 graph_data <- data.frame(
