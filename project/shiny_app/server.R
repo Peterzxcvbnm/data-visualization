@@ -14,6 +14,24 @@ data_frame = data_frame %>%
     filter(gameDuration > 240)
 data_frame$teamPosition = factor(data_frame$teamPosition, levels = c("TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY"))
 
+make_lane_graph <- function(df, color, title) {
+  df_grouped = df %>% group_by(championName) %>% filter(n() > 9) %>% summarise(wins = sum(win, na.rm = TRUE), totalGames = n(), winRate = sum(win, na.rm = TRUE) / n())
+  df_grouped = df_grouped[order(df_grouped$winRate), ]
+  
+  data <- data.frame(
+    winRate = df_grouped$winRate,
+    name = factor(df_grouped$championName, levels = df_grouped$championName)
+  )
+  
+  x_breaks = c(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0)
+  
+  ggplot(data) +
+            geom_col(aes(winRate, name), fill = color, width = 0.5, position = position_dodge(0.7)) +
+            labs(title = title, x = "WIN RATE", y = "CHAMPIONS") +
+            theme(axis.title = element_text(size = 20), axis.text = element_text(size = 14)) + 
+            scale_x_continuous(breaks=x_breaks, labels=x_breaks,limits=c(0.0,1.0))
+  }
+
 server <- function(input, output) {
   output$violin_kills_assists_diff <- renderPlot({
     data = data_frame %>%
@@ -104,12 +122,44 @@ server <- function(input, output) {
       name = factor(df_grouped$championName, levels = df_grouped$championName)
     )
     
-    plt <- ggplot(graph_data) +
-      geom_col(aes(winRate, name), width = 0.5)
-    plt
+    ggplot(graph_data) +
+      geom_col(aes(winRate, name), width = 0.5) +
+      labs(title = paste(championVariable, teamPositionVariable, "Win Rate", sep = " "), x = "WIN RATE", y = "CHAMPIONS") +
+      theme(axis.title = element_text(size = 20))
   })
   
   output$top_champion_winrate = renderPlot({
-    
+    df <- as.data.frame(data)
+    df$win <- as.logical(df$win)
+    topDf <- df[df$teamPosition == "TOP",]
+    make_lane_graph(topDf, "#1338BE", "TOP WIN RATE")
+  })
+  
+  output$jungle_champion_winrate = renderPlot({
+    df <- as.data.frame(data)
+    df$win <- as.logical(df$win)
+    jungleDf <- df[df$teamPosition == "JUNGLE",]
+    make_lane_graph(jungleDf, "#048243", "JUNGLE WIN RATE")
+  })
+  
+  output$middle_champion_winrate = renderPlot({
+    df <- as.data.frame(data)
+    df$win <- as.logical(df$win)
+    middleDf <- df[df$teamPosition == "MIDDLE",]
+    make_lane_graph(middleDf, "#C21807", "MIDDLE WIN RATE")
+  })
+  
+  output$bottom_champion_winrate = renderPlot({
+    df <- as.data.frame(data)
+    df$win <- as.logical(df$win)
+    bottomDf <- df[df$teamPosition == "BOTTOM",]
+    make_lane_graph(bottomDf, "#5a3d46", "BOTTOM WIN RATE")
+  })
+  
+  output$utility_champion_winrate = renderPlot({
+    df <- as.data.frame(data)
+    df$win <- as.logical(df$win)
+    supportDf <- df[df$teamPosition == "UTILITY",]
+    make_lane_graph(supportDf, "#FF8300", "SUPPORT WIN RATE")
   })
 }

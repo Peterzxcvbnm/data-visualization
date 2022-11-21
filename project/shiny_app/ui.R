@@ -9,11 +9,6 @@ ui <- fluidPage(
 # Sidebar with a slider input for number of bins 
   sidebarLayout(
     sidebarPanel(
-      sliderInput("five_point_ideology",
-                  "Select Five Point Ideology (1=Very liberal, 5=Very conservative):",
-                  min = 1,
-                  max = 5,
-                  value = 3),
       selectInput("positions_selected",
                   "Select positions:",
                   c("TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY"),
