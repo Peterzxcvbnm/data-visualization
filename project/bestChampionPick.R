@@ -1,10 +1,9 @@
-install.packages("ggplotly")
 library(tidyverse)
 library(ggplot2)
 library(grid)
 library(shadowtext)
 
-championVariable = "Ahri"
+championVariable = "Heimerdinger"
 teamPositionVariable = "MIDDLE"
 
 data <- read.csv("/Users/oliver/OfflineDocuments/git/Uddannelse/data-visualization/project/selected-data.csv", sep = ",")
@@ -22,9 +21,8 @@ data <- data.frame(
   winRate = df_grouped$winRate,
   name = factor(df_grouped$championName, levels = df_grouped$championName)
 )
-
+data <- data[data$winRate < 1,]
 
 plt <- ggplot(data) +
                   geom_col(aes(winRate, name), width = 0.5)
-
 plt
