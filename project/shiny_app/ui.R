@@ -23,10 +23,10 @@ ui <- fluidPage(
                   "Lane:",
                   c("TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY"),
                   multiple = FALSE,
-                  selected = c("MIDDLE")),
+                  selected = c("TOP")),
       textInput("champion_pick",
                 "Champion:",
-                "Ahri")
+                "Aatrox")
     ),
 
 # Show a plot of the generated distribution
