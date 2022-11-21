@@ -97,13 +97,49 @@ server <- function(input, output) {
       summarise(wins = sum(win == "True"), loses = sum(win == "False"), winrate = wins / (wins + loses))
 
 
-    plot.default(data$visionScoreDiff, data$winrate,
-        type = "o",
+    qplot(data$visionScoreDiff, data$winrate, group = 1, geom=c("point", "line"),
         xlab = "visionScoreDiff",
         ylab = "Winrate",
         main = "Winrate by vision score diff")
   })
   
+  output$vision_score_by_deaths = renderPlot({
+    data_frame_deaths = data_frame %>%
+      group_by(gameId, teamId) %>%
+      summarise(visionScore = mean(visionScore), deaths = mean(deaths)) %>%
+      group_by(gameId) %>%
+      summarise(visionScore = diff(visionScore), deaths = first(deaths)) %>%
+      mutate(visionScoreDiff = cut(visionScore,
+                                   breaks = c(-Inf, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, Inf),
+                                   right = TRUE)) %>%
+      group_by(visionScoreDiff) %>%
+      summarise(deaths = mean(deaths))
+    
+    
+    qplot(data_frame_deaths$visionScoreDiff, data_frame_deaths$deaths, group = 1, geom=c("point", "line"),
+          xlab = "visionScoreDiff",
+          ylab = "Deaths",
+          main = "Deaths by vision score diff",
+    )
+  })
+  output$gameDuration_to_visionScore = renderPlot({
+    plot(data_frame$gameDuration, data_frame$visionScore,
+         ylab = "visionScore",
+         xlab = "Game Duration",
+         main = "Game Duration to VisionScore",
+         col.lab = "darkgreen", col.main = "darkgreen",
+         col.axis = "darkgreen")
+    abline(reg = lm(data_frame$visionScore ~ data_frame$gameDuration), col = "blue")
+  })
+  output$gameDuration_to_deaths = renderPlot({
+    plot(data_frame$gameDuration, data_frame$deaths,
+         ylab = "Deaths",
+         xlab = "Game Duration",
+         main = "Game Duration to deaths",
+         col.lab = "darkgreen", col.main = "darkgreen",
+         col.axis = "darkgreen")
+    abline(reg = lm(data_frame$deaths ~ data_frame$gameDuration), col = "blue")
+  })  
   output$best_champion_pick = renderPlot({
     championVariable = input$champion_pick
     teamPositionVariable = input$champion_pick_lane
@@ -162,4 +198,35 @@ server <- function(input, output) {
     supportDf <- df[df$teamPosition == "UTILITY",]
     make_lane_graph(supportDf, "#FF8300", "SUPPORT WIN RATE")
   })
+  
+  output$teamid_teamposition_win = renderPlot({
+    selected_data <- data_frame %>% select(teamId, win)
+    wins <- selected_data %>% filter(win == "True")
+    ggplot(wins, aes(x = win)) +
+      geom_bar(aes(fill = teamId), position = "dodge") +
+      geom_text(stat = "count", aes(label = after_stat(count)), position = position_dodge(width = 1), vjust = -1) +
+      theme_bw()
+  }) 
+  
+  output$wards_Killed_violinPlot = renderPlot({
+    data_frame = data_frame %>%
+      filter(teamPosition != "")
+    data_frame$teamPosition = factor(data_frame$teamPosition, levels = c("TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY"))
+    ggplot(data_frame, aes(x = teamPosition, y = wardsKilled, fill=win)) +
+      geom_violin(position = position_dodge(1)) +
+      labs(title = "Wards killed", x = "Wards killed", y = "Count") + # nolint
+      theme(plot.title = element_text(hjust = 0.5)) +
+      geom_boxplot(width=0.25, position = position_dodge(1))
+  }) 
+  
+  output$wards_Placed_violinPlot = renderPlot({
+    data_frame = data_frame %>%
+      filter(teamPosition != "")
+    data_frame$teamPosition = factor(data_frame$teamPosition, levels = c("TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY"))
+    ggplot(data_frame, aes(x = teamPosition, y = wardsPlaced, fill=win)) +
+      geom_violin(position = position_dodge(1)) +
+      labs(title = "Wards placed", x = "Wards placed", y = "Count") + # nolint
+      theme(plot.title = element_text(hjust = 0.5)) +
+      geom_boxplot(width=0.25, position = position_dodge(1))
+  }) 
 }

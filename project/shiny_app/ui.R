@@ -36,7 +36,13 @@ ui <- fluidPage(
       plotOutput("jungle_champion_winrate"),
       plotOutput("middle_champion_winrate"),
       plotOutput("bottom_champion_winrate"),
-      plotOutput("utility_champion_winrate")
+      plotOutput("utility_champion_winrate"),
+      plotOutput("vision_score_by_deaths"),
+      plotOutput("gameDuration_to_visionScore"),
+      plotOutput("gameDuration_to_deaths"),
+      plotOutput("teamid_teamposition_win"),
+      plotOutput("wards_Killed_violinPlot"),
+      plotOutput("wards_Placed_violinPlot"),
     )
   )
 )
