@@ -39,7 +39,10 @@ ui <- fluidPage(
       plotOutput("vision_score_by_deaths"),
       plotOutput("gameDuration_to_visionScore"),
       plotOutput("gameDuration_to_deaths"),
-      plotOutput("best_champion_pick")
+      plotOutput("best_champion_pick"),
+      plotOutput("teamid_teamposition_win"),
+      plotOutput("wards_Killed_violinPlot"),
+      plotOutput("wards_Placed_violinPlot")
     )
   )
 )

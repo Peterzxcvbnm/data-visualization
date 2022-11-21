@@ -144,4 +144,35 @@ server <- function(input, output) {
       geom_col(aes(winRate, name), width = 0.5)
     plt
   })
+  
+  output$teamid_teamposition_win = renderPlot({
+    selected_data <- data_frame %>% select(teamId, win)
+    wins <- selected_data %>% filter(win == "True")
+    ggplot(wins, aes(x = win)) +
+      geom_bar(aes(fill = teamId), position = "dodge") +
+      geom_text(stat = "count", aes(label = after_stat(count)), position = position_dodge(width = 1), vjust = -1) +
+      theme_bw()
+  }) 
+  
+  output$wards_Killed_violinPlot = renderPlot({
+    data_frame = data_frame %>%
+      filter(teamPosition != "")
+    data_frame$teamPosition = factor(data_frame$teamPosition, levels = c("TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY"))
+    ggplot(data_frame, aes(x = teamPosition, y = wardsKilled, fill=win)) +
+      geom_violin(position = position_dodge(1)) +
+      labs(title = "Wards killed", x = "Wards killed", y = "Count") + # nolint
+      theme(plot.title = element_text(hjust = 0.5)) +
+      geom_boxplot(width=0.25, position = position_dodge(1))
+  }) 
+  
+  output$wards_Placed_violinPlot = renderPlot({
+    data_frame = data_frame %>%
+      filter(teamPosition != "")
+    data_frame$teamPosition = factor(data_frame$teamPosition, levels = c("TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY"))
+    ggplot(data_frame, aes(x = teamPosition, y = wardsPlaced, fill=win)) +
+      geom_violin(position = position_dodge(1)) +
+      labs(title = "Wards placed", x = "Wards placed", y = "Count") + # nolint
+      theme(plot.title = element_text(hjust = 0.5)) +
+      geom_boxplot(width=0.25, position = position_dodge(1))
+  }) 
 }
