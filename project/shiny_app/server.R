@@ -79,11 +79,30 @@ server <- function(input, output) {
       summarise(wins = sum(win == "True"), loses = sum(win == "False"), winrate = wins / (wins + loses))
 
 
-    plot.default(data$visionScoreDiff, data$winrate,
-        type = "o",
+    qplot(data$visionScoreDiff, data$winrate, group = 1, geom=c("point", "line"),
         xlab = "visionScoreDiff",
         ylab = "Winrate",
         main = "Winrate by vision score diff")
+  })
+  
+  output$vision_score_by_deaths = renderPlot({
+    data_frame_deaths = data_frame %>%
+      group_by(gameId, teamId) %>%
+      summarise(visionScore = mean(visionScore), deaths = mean(deaths)) %>%
+      group_by(gameId) %>%
+      summarise(visionScore = diff(visionScore), deaths = first(deaths)) %>%
+      mutate(visionScoreDiff = cut(visionScore,
+                                   breaks = c(-Inf, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, Inf),
+                                   right = TRUE)) %>%
+      group_by(visionScoreDiff) %>%
+      summarise(deaths = mean(deaths))
+    
+    
+    qplot(data_frame_deaths$visionScoreDiff, data_frame_deaths$deaths, group = 1, geom=c("point", "line"),
+          xlab = "visionScoreDiff",
+          ylab = "Deaths",
+          main = "Deaths by vision score diff",
+    )
   })
   
   output$best_champion_pick = renderPlot({
