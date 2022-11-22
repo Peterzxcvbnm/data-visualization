@@ -231,7 +231,7 @@ server <- function(input, output) {
       geom_boxplot(width=0.25, position = position_dodge(1))
   })
 
-  output$animation_plot = renderImage({
+  "output$animation_plot = renderImage({
     data_animation <-  data_frame %>%
                   filter(gameDuration > 240) %>%
                   group_by(gameId, teamId) %>%
@@ -284,13 +284,93 @@ server <- function(input, output) {
       view_follow()
 
     outfile <- tempfile(fileext = '.gif')
-    anim_save("outfile.gif", animate(plot, duration = 15, fps = 5, end_pause = 25))
+    anim_save('outfile.gif'', animate(plot, duration = 15, fps = 5, end_pause = 25))
       # Return a list containing the filename
-    list(src = "outfile.gif",
+    list(src = 'outfile.gif',
          contentType = 'image/gif'
          # width = 400,
          # height = 300,
-         # alt = "This is alternate text"
+         # alt = 'This is alternate text'
     )
-  }, deleteFile = TRUE)
+  }, deleteFile = TRUE)"
+  
+  # Observing event for animation properties
+  observeEvent(input$submit_animation, {
+    print(paste("Animation properties has been received!"))
+    
+    # animation
+    output$wards_Placed_violinPlot = renderPlot({
+      data_frame = data_frame %>%
+        filter(teamPosition != "")
+      data_frame$teamPosition = factor(data_frame$teamPosition, levels = c("TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY"))
+      ggplot(data_frame, aes(x = teamPosition, y = wardsPlaced, fill=win)) +
+        geom_violin(position = position_dodge(1)) +
+        labs(title = "Wards placed", x = "Wards placed", y = "Count") + # nolint
+        theme(plot.title = element_text(hjust = 0.5)) +
+        geom_boxplot(width=0.25, position = position_dodge(1))
+    })
+    
+    output$animation_plot = renderImage({
+      data_animation <-  data_frame %>%
+        filter(gameDuration > 240) %>%
+        group_by(gameId, teamId) %>%
+        summarise(gameDuration = gameDuration[1],
+                  assists = sum(assists),
+                  deaths = sum(deaths),
+                  goldEarned = sum(goldEarned),
+                  kills = sum(kills),
+                  totalDamageDealt = sum(totalDamageDealt),
+                  visionScore = sum(visionScore),
+                  wardsKilled = sum(wardsKilled),
+                  wardsPlaced = sum(wardsPlaced),
+                  win = win[1],
+                  totalMinionsKilled = sum(totalMinionsKilled))
+      
+      data_animation <- data_animation %>% arrange(gameDuration)
+      
+      # making intervals
+      data_animation <- data_animation %>% mutate(intervalIndex = 1)
+      
+      for (row in 1:nrow(data_animation))
+      {
+        x = floor((data_animation[row, 3] - min(data_animation$gameDuration)) / input$animation_length_of_intervals) + 1
+        data_animation[row, ncol(data_animation)] = x * input$animation_length_of_intervals / 60
+      }
+      
+      data_animation <- data_animation %>% group_by(intervalIndex, win) %>% summarise(assists = mean(assists),
+                                                                                      deaths = mean(deaths),
+                                                                                      goldEarned = mean(goldEarned),
+                                                                                      kills = mean(kills),
+                                                                                      totalDamageDealt = mean(totalDamageDealt),
+                                                                                      visionScore = mean(visionScore),
+                                                                                      wardsKilled = mean(wardsKilled),
+                                                                                      wardsPlaced = mean(wardsPlaced),
+                                                                                      totalMinionsKilled = mean(totalMinionsKilled))
+      
+      last_value <- data_animation[nrow(data_animation), 1]
+      
+      # The animation
+      # https://stackoverflow.com/questions/53092216/any-way-to-pause-at-specific-frames-time-points-with-transition-reveal-in-gganim/53093389
+      plot <- ggplot(data_animation, aes(x = intervalIndex, y = !!sym(input$animation_y_value), group = win, color = win)) + 
+        geom_line() + 
+        geom_segment(aes(xend = as.integer(last_value), yend = !!sym(input$animation_y_value)), linetype = 2, colour = 'grey') + 
+        geom_point(size = 2) + 
+        geom_text(aes(x = as.integer(last_value), label = win), hjust = 0) + 
+        transition_reveal(intervalIndex) +
+        coord_cartesian(clip = 'off') + 
+        labs(title = paste(input$animation_y_value, ' through time - victory vs. defeat'), x = 'Game duration [min.]', y = input$animation_y_value) + 
+        theme_minimal() +
+        view_follow()
+      
+      outfile <- tempfile(fileext = '.gif')
+      anim_save('outfile.gif', animate(plot, duration = 15, fps = 5, end_pause = 25))
+      # Return a list containing the filename
+      list(src = 'outfile.gif',
+           contentType = 'image/gif'
+           # width = 400,
+           # height = 300,
+           # alt = 'This is alternate text'
+      )
+    }, deleteFile = TRUE)
+  })
 }
