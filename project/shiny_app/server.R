@@ -149,7 +149,7 @@ server <- function(input, output) {
     df <- df[df$gameDuration >= 240,] # outliers. The ones ending in a draw
     df$win <- as.logical(df$win)
     
-    df_grouped <- df %>% group_by(gameId) %>% filter(any(championName==championVariable && teamPosition == teamPositionVariable)) %>% filter(teamPosition == teamPositionVariable)
+    df_grouped <- df %>% group_by(gameId) %>% filter(championName==championVariable) %>% filter(teamPosition == teamPositionVariable)
     df_grouped <- df_grouped[df_grouped$championName != championVariable,]
     df_grouped <- df_grouped %>% ungroup() %>% group_by(championName) %>% summarise(wins = sum(win, na.rm = TRUE), totalGames = n(), winRate = 1- (sum(win, na.rm = TRUE) / n()))
     df_grouped = df_grouped[order(df_grouped$winRate), ]
@@ -257,7 +257,7 @@ server <- function(input, output) {
     data_animation <- data_animation %>% arrange(gameDuration)
     
     # making intervals    
-    data_animation <- data_animation %>% mutate(intervalIndex = (floor((gameDuration - min(data_filtered$gameDuration)) / length_of_intervals) + 1)* length_of_intervals / 60)
+    data_animation <- data_animation %>% mutate(intervalIndex = (floor((gameDuration - min(data_animation$gameDuration)) / input$animation_length_of_intervals) + 1)* input$animation_length_of_intervals / 60)
     
     
     data_animation <- data_animation %>% group_by(intervalIndex, win) %>% summarise(assists = mean(assists),
