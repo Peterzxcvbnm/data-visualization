@@ -6,7 +6,7 @@ library(tidyverse)
 library(gganimate)
 
 # loading the data
-data <- read.csv("E:/git_projects/data-visualization/project/selected-data.csv", sep = ",")
+data <- read.csv("selected-data.csv", sep = ",")
 data_frame <- as.data.frame(data)
 
 # remove irrelevant data points
@@ -29,13 +29,13 @@ data_filtered <- data_filtered %>% arrange(gameDuration)
 
 # making intervals
 length_of_intervals <- 120 # user defined
-data_intervals <- data_filtered %>% mutate(intervalIndex = 1)
+data_intervals <- data_filtered %>% mutate(intervalIndex = (floor((gameDuration - min(data_filtered$gameDuration)) / length_of_intervals) + 1)* length_of_intervals / 60)
 
-for (row in 1:nrow(data_filtered))
+"for (row in 1:nrow(data_filtered))
 {
   x = floor((data_filtered[row, 3] - min(data_filtered$gameDuration)) / length_of_intervals) + 1
   data_intervals[row, ncol(data_intervals)] = x * length_of_intervals / 60
-}
+}"
 
 data_intervals <- data_intervals %>% group_by(intervalIndex, win) %>% summarise(assists = mean(assists),
                                                                                  deaths = mean(deaths),

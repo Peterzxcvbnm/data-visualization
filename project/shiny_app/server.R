@@ -256,14 +256,9 @@ server <- function(input, output) {
     
     data_animation <- data_animation %>% arrange(gameDuration)
     
-    # making intervals
-    data_animation <- data_animation %>% mutate(intervalIndex = 1)
+    # making intervals    
+    data_animation <- data_animation %>% mutate(intervalIndex = (floor((gameDuration - min(data_filtered$gameDuration)) / length_of_intervals) + 1)* length_of_intervals / 60)
     
-    for (row in 1:nrow(data_animation))
-    {
-      x = floor((data_animation[row, 3] - min(data_animation$gameDuration)) / input$animation_length_of_intervals) + 1
-      data_animation[row, ncol(data_animation)] = x * input$animation_length_of_intervals / 60
-    }
     
     data_animation <- data_animation %>% group_by(intervalIndex, win) %>% summarise(assists = mean(assists),
                                                                                     deaths = mean(deaths),
