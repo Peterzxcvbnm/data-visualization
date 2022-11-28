@@ -6,9 +6,10 @@ library(grid)
 library(shadowtext)
 library(tidyverse)
 library(gganimate)
+library(gifski)
 
 # loading the data
-data <- read.csv("project/selected-data.csv", sep = ",")
+data <- read.csv("data.csv", sep = ",")
 data_frame <- as.data.frame(data)
 data_frame = data_frame %>%
     filter(teamPosition != "") %>%
@@ -154,6 +155,7 @@ server <- function(input, output) {
     df_grouped <- df_grouped %>% filter(gameId %in% gameIds$gameId)
     df_grouped <- df_grouped[df_grouped$championName != championVariable,]
     df_grouped <- df_grouped  %>% ungroup() %>%
+      
     group_by(championName) %>% 
     summarise(wins = sum(win, na.rm = TRUE), totalGames = n(), winRate = 1- (sum(win, na.rm = TRUE) / n())) %>%
      filter(winRate != 0) %>% filter(winRate != 1)
@@ -290,16 +292,6 @@ server <- function(input, output) {
       theme_minimal() +
       view_follow()
     
-    "outfile <- tempfile(fileext = '.gif')
-    anim_save('outfile.gif', animate(plot, duration = 15, fps = 5, end_pause = 25))
-    # Return a list containing the filename
-    list(src = 'outfile.gif',
-         contentType = 'image/gif'
-         # width = 400,
-         # height = 300,
-         # alt = 'This is alternate text'
-    )"
-    
     values$animation_plot_value <- plot
   })
   
@@ -308,8 +300,10 @@ server <- function(input, output) {
       list()
     }
     else {
+      animation <- animate(values$animation_plot_value, duration = 15, fps = 5, end_pause = 25, renderer = gifski_renderer())
       outfile <- tempfile(fileext = '.gif')
-      anim_save('outfile.gif', animate(values$animation_plot_value, duration = 15, fps = 5, end_pause = 25))
+      anim_save('outfile.gif', animation)
+      #save_animation(animation, 'outfile.gif')
       list(src = 'outfile.gif',
            contentType = 'image/gif'
       )

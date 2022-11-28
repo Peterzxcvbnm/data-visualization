@@ -5,9 +5,9 @@ account: troelszink
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 7723005
-bundleId: 6550565
+bundleId: 6562516
 url: https://troelszink.shinyapps.io/data-visualization-group12/
-when: 1669291495.46907
-lastSyncTime: 1669291495.46908
+when: 1669642762.45447
+lastSyncTime: 1669642762.45449
 asMultiple: FALSE
 asStatic: FALSE
