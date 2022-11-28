@@ -149,9 +149,14 @@ server <- function(input, output) {
     df <- df[df$gameDuration >= 240,] # outliers. The ones ending in a draw
     df$win <- as.logical(df$win)
     
-    df_grouped <- df %>% group_by(gameId) %>% filter(championName==championVariable) %>% filter(teamPosition == teamPositionVariable)
+    df_grouped <- df %>% filter(teamPosition == teamPositionVariable)
+    gameIds <- df_grouped %>% filter(championName == championVariable)
+    df_grouped <- df_grouped %>% filter(gameId %in% gameIds$gameId)
     df_grouped <- df_grouped[df_grouped$championName != championVariable,]
-    df_grouped <- df_grouped %>% ungroup() %>% group_by(championName) %>% summarise(wins = sum(win, na.rm = TRUE), totalGames = n(), winRate = 1- (sum(win, na.rm = TRUE) / n()))
+    df_grouped <- df_grouped  %>% ungroup() %>%
+    group_by(championName) %>% 
+    summarise(wins = sum(win, na.rm = TRUE), totalGames = n(), winRate = 1- (sum(win, na.rm = TRUE) / n())) %>%
+     filter(winRate != 0) %>% filter(winRate != 1)
     df_grouped = df_grouped[order(df_grouped$winRate), ]
     
     graph_data <- data.frame(
