@@ -35,6 +35,29 @@ make_lane_graph <- function(df, color, title) {
   }
 
 server <- function(input, output) {
+  # DOWNLOAD BUTTONS
+  output$download_dataset <- downloadHandler(
+    filename <- function() {
+      paste("data", "csv", sep=".")
+    },
+    
+    content <- function(file) {
+      file.copy("data.csv", file)
+    }
+  )
+  
+  # UPDATE REPORT FILE BEFORE DELIVERING PROJECT!
+  output$download_report <- downloadHandler(
+    filename <- function() {
+      paste("report", "pdf", sep=".")
+    },
+    
+    content <- function(file) {
+      file.copy("report.pdf", file)
+    }
+  )
+
+  # PLOTS
   output$violin_kills_assists_diff <- renderPlot({
     data = data_frame %>%
       mutate(kill_assist_diff = kills - assists) %>%
@@ -245,7 +268,7 @@ server <- function(input, output) {
   observeEvent(input$submit_animation, {
     print(paste('Animation properties has been received!'))
     
-    # animation
+    # ANIMATION
     data_animation <- data_frame %>%
       filter(gameDuration > 240) %>%
       group_by(gameId, teamId) %>%

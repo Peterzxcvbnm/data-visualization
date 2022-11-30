@@ -3,7 +3,21 @@ library(shiny)
 library(shinydashboard)
 
 introductionPage = fluidPage(titlePanel("Introduction"),
-                             h3("Stuff")
+                             h5("Data Visualization (SM-DV) - Autumn 2022"),
+                             h5("Group 12"),
+                             h5("Kristian Østergaard - krust19@student.sdu.dk"),
+                             h5("Oliver Winther - olvan18@student.sdu.dk"),
+                             h5("Peter Andreas Brændgaard - pebra18@student.sdu.dk"),
+                             h5("Troels Zink Kristensen - tkris17@student.sdu.dk"),
+                             
+                             h3("Dataset"),
+                             h5("The used dataset origins from Riot Developer Portal:"), a("Riot API", href="https://developer.riotgames.com/apis#match-v5/GET_getMatch"),
+                             h5("The original dataset has been reduced to contain less variables for simplicity of the project."),
+                             downloadButton("download_dataset", "Download dataset"),
+                             
+                             h3("Report"),
+                             h5("The report can be downloaded below."),
+                             downloadButton("download_report", "Download report"),
                              )
 
 visionPage = fluidPage(# App title ----
@@ -58,9 +72,37 @@ championsPage = fluidPage(titlePanel("Champions"),
                                 multiple = FALSE,
                                 selected = c("TOP")
                               ),
-                              textInput("champion_pick",
-                                        "Champion:",
-                                        "Aatrox")
+                              #textInput("champion_pick",
+                              #          "Champion:",
+                              #          "Aatrox"
+                              #),
+                              selectInput(
+                                "champion_pick",
+                                "Champion:",
+                                c("Aatrox", "Ahri", "Akali", "Alistar", "Amumu", "Anivia", "Annie", "Ashe", "Aurelion Sol", "Azir",
+                                  "Bard", "Blitzcrank", "Brand", "Braum",
+                                  "Caitlyn", "Camille", "Cassiopeia", "Cho'Gath", "Corki",
+                                  "Darius", "Diana", "Dr. Mundo", "Draven",
+                                  "Ekko", "Elise", "Evelynn", "Ezreal",
+                                  "Fiddlesticks", "Fiora", "Fizz",
+                                  "Galio", "Gangplank", "Garen", "Gnar", "Gragas", "Graves",
+                                  "Hecarim", "Heimerdinger",
+                                  "Illaoi", "Irelia", "Ivern",
+                                  "Janna", "Jarvan IV", "Jax", "Jayce", "Jhin", "Jinx",
+                                  "Kai'Sa", "Kalista", "Karma", "Karthus", "Kassadin", "Katarina", "Kayle", "Kayn", "Kennen", "Kha'Zix", "Kindred", "Kled", "Kog'Maw",
+                                  "LeBlanc", "Lee Sin", "Leona", "Lissandra", "Lucian", "Lulu", "Lux",
+                                  "Malphite", "Malzahar", "Maokai", "Master Yi", "Miss Fortune", "Mordekaiser", "Morgana",
+                                  "Nami", "Nasus", "Nautilus", "Nidalee", "Nocturne", "Nunu & Willump",
+                                  "Olaf", "Orianna", "Ornn",
+                                  "Pantheon", "Poppy", "Pyke",
+                                  "Quinn",
+                                  "Rakan", "Rammus", "Rek'Sai", "Renekton", "Rengar", "Riven", "Rumble", "Ryze",
+                                  "Sejuani", "Shaco", "Shen", "Shyvana", "Singed", "Sion", "Sivir", "Skarner", "Sona", "Soraka", "Swain", "Sylas", "Syndra",
+                                  "Tahm Kench"
+                                ),
+                                multiple = FALSE,
+                                selected = c("TOP")
+                              ),
                             ),
                             
                             mainPanel(
