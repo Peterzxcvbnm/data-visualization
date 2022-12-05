@@ -46,7 +46,7 @@ server <- function(input, output) {
     },
     
     content <- function(file) {
-      file.copy("project.pdf", file)
+      file.copy("project-guidelines.pdf", file)
     }
   )
   
