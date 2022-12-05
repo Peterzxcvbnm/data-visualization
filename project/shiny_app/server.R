@@ -321,7 +321,7 @@ server <- function(input, output) {
       geom_text(aes(x = as.integer(last_value), label = win), hjust = 0) + 
       transition_reveal(intervalIndex) +
       coord_cartesian(clip = 'off') + 
-      labs(title = paste("3 " + input$animation_y_value, ' through time - victory vs. defeat'), x = 'Game duration [min.]', y = input$animation_y_value) + 
+      labs(title = paste("3 ", input$animation_y_value, ' through time - victory vs. defeat'), x = 'Game duration [min.]', y = input$animation_y_value) + 
       theme_minimal() +
       view_follow()
     
