@@ -80,7 +80,7 @@ server <- function(input, output) {
       filter(teamPosition %in% input$positions_selected)
 
     ggplot(data, aes(x = visionScore, group = win, fill = win)) +
-      labs(title = "Vision score density by win/loss", x = "Vision score", y = "Density") +
+      labs(title = "1.1 Vision score density by win/loss", x = "Vision score", y = "Density") +
       geom_density(adjust = 1.5, alpha = .4)
   })
 
@@ -93,7 +93,7 @@ server <- function(input, output) {
     ggplot(data, aes(x = teamPosition, y = ifelse(win == "True", wardsPlaced, - wardsPlaced), fill = win)) +
       geom_bar(stat = "identity", position = "identity") +
       scale_y_continuous(limits = c(-max(data$wardsPlaced), max(data$wardsPlaced))) +
-      labs(title = "Wards placed", x = "Position", y = "Wards placed") + # nolint
+      labs(title = "1.3 Wards placed", x = "Position", y = "Wards placed") + # nolint
     theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 15)) +
       coord_flip()
   })
@@ -107,7 +107,7 @@ server <- function(input, output) {
     ggplot(data, aes(x = teamPosition, y = ifelse(win == "True", wardsKilled, - wardsKilled), fill = win)) +
       geom_bar(stat = "identity", position = "identity") +
       scale_y_continuous(limits = c(-max(data$wardsKilled), max(data$wardsKilled))) +
-      labs(title = "Wards killed", x = "Position", y = "Wards killed") + # nolint
+      labs(title = "1.4 Wards killed", x = "Position", y = "Wards killed") + # nolint
     theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 15)) +
       coord_flip()
   })
@@ -127,7 +127,7 @@ server <- function(input, output) {
 
 
     qplot(data$visionScoreDiff, data$winrate, group = 1, geom=c("point", "line"),
-        xlab = "Difference in vision score",
+        xlab = "1.2 Difference in vision score",
         ylab = "Winrate",
         main = "Winrate by vision score diff")
   })
@@ -146,7 +146,7 @@ server <- function(input, output) {
     
     
     qplot(data_frame_deaths$visionScoreDiff, data_frame_deaths$deaths, group = 1, geom=c("point", "line"),
-          xlab = "Vision score difference",
+          xlab = "1.5 Vision score difference",
           ylab = "Deaths",
           main = "Deaths by vision score diff",
     )
@@ -155,14 +155,14 @@ server <- function(input, output) {
     plot(data_frame$gameDuration, data_frame$visionScore,
          ylab = "visionScore",
          xlab = "Game Duration",
-         main = "Game Duration to VisionScore", col = alpha("gray", 0.5))
+         main = "1.6 Game Duration to VisionScore", col = alpha("gray", 0.5))
     abline(reg = lm(data_frame$visionScore ~ data_frame$gameDuration), col = "red")
   })
   output$gameDuration_to_deaths = renderPlot({
     plot(data_frame$gameDuration, data_frame$deaths,
          ylab = "Deaths",
          xlab = "Game Duration",
-         main = "Game Duration to deaths", col = alpha("gray", 0.5))
+         main = "1.7 Game Duration to deaths", col = alpha("gray", 0.5))
     abline(reg = lm(data_frame$deaths ~ data_frame$gameDuration), col = "red")
   })
   
@@ -195,7 +195,7 @@ server <- function(input, output) {
     ggplotly(
       ggplot(graph_data) +
       geom_col(aes(winRate, name), width = 0.5) +
-      labs(title = paste(championVariable, teamPositionVariable, "Win Rate", sep = " "), x = "WIN RATE", y = "CHAMPIONS") +
+      labs(title = paste("2.1", championVariable, teamPositionVariable, "Win Rate", sep = " "), x = "WIN RATE", y = "CHAMPIONS") +
       theme(axis.title = element_text(size = 20), axis.text = element_text(size = 14)) + 
       scale_x_continuous(breaks=x_breaks, labels=x_breaks,limits=c(0.0,1.0))
       )
@@ -205,35 +205,35 @@ server <- function(input, output) {
     df <- as.data.frame(data)
     df$win <- as.logical(df$win)
     topDf <- df[df$teamPosition == "TOP",]
-    make_lane_graph(topDf, "#1338BE", "TOP WIN RATE")
+    make_lane_graph(topDf, "#1338BE", "2.2 TOP WIN RATE")
   })
   
   output$jungle_champion_pick = renderPlotly({
     df <- as.data.frame(data)
     df$win <- as.logical(df$win)
     jungleDf <- df[df$teamPosition == "JUNGLE",]
-    make_lane_graph(jungleDf, "#048243", "JUNGLE WIN RATE")
+    make_lane_graph(jungleDf, "#048243", "2.3 JUNGLE WIN RATE")
   })
   
   output$middle_champion_pick = renderPlotly({
     df <- as.data.frame(data)
     df$win <- as.logical(df$win)
     middleDf <- df[df$teamPosition == "MIDDLE",]
-    make_lane_graph(middleDf, "#C21807", "MIDDLE WIN RATE")
+    make_lane_graph(middleDf, "#C21807", "2.4 MIDDLE WIN RATE")
   })
   
   output$bottom_champion_pick = renderPlotly({
     df <- as.data.frame(data)
     df$win <- as.logical(df$win)
     bottomDf <- df[df$teamPosition == "BOTTOM",]
-    make_lane_graph(bottomDf, "#5a3d46", "BOTTOM WIN RATE")
+    make_lane_graph(bottomDf, "#5a3d46", "2.5 BOTTOM WIN RATE")
   })
   
   output$utility_champion_pick = renderPlotly({
     df <- as.data.frame(data)
     df$win <- as.logical(df$win)
     supportDf <- df[df$teamPosition == "UTILITY",]
-    make_lane_graph(supportDf, "#FF8300", "SUPPORT WIN RATE")
+    make_lane_graph(supportDf, "#FF8300", "2.6 SUPPORT WIN RATE")
   })
   
   output$teamid_teamposition_win = renderPlot({
@@ -253,7 +253,7 @@ server <- function(input, output) {
       filter(teamPosition %in% input$positions_selected)
     ggplot(data_frame, aes(x = teamPosition, y = wardsKilled, fill=win)) +
       geom_violin(position = position_dodge(1)) +
-      labs(title = "Wards killed", x = "Wards killed", y = "Count") + # nolint
+      labs(title = "1.8 Wards killed", x = "Wards killed", y = "Count") + # nolint
       theme(plot.title = element_text(hjust = 0.5)) +
       geom_boxplot(width=0.25, position = position_dodge(1))
   }) 
@@ -266,7 +266,7 @@ server <- function(input, output) {
       filter(teamPosition %in% input$positions_selected)
     ggplot(data_frame, aes(x = teamPosition, y = wardsPlaced, fill=win)) +
       geom_violin(position = position_dodge(1)) +
-      labs(title = "Wards placed", x = "Wards placed", y = "Count") + # nolint
+      labs(title = "1.9 Wards placed", x = "Wards placed", y = "Count") + # nolint
       theme(plot.title = element_text(hjust = 0.5)) +
       geom_boxplot(width=0.25, position = position_dodge(1))
   })
@@ -321,7 +321,7 @@ server <- function(input, output) {
       geom_text(aes(x = as.integer(last_value), label = win), hjust = 0) + 
       transition_reveal(intervalIndex) +
       coord_cartesian(clip = 'off') + 
-      labs(title = paste(input$animation_y_value, ' through time - victory vs. defeat'), x = 'Game duration [min.]', y = input$animation_y_value) + 
+      labs(title = paste("3 " + input$animation_y_value, ' through time - victory vs. defeat'), x = 'Game duration [min.]', y = input$animation_y_value) + 
       theme_minimal() +
       view_follow()
     
