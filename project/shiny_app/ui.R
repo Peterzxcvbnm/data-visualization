@@ -148,10 +148,12 @@ animationPage = fluidPage(
     value = 120,
     step = 30
   ),
-  actionButton(inputId = "submit_animation",
-               label = "Submit animation properties"),
+  actionButton(inputId = "submit_animation", label = "Generate animation"),
+  br(),
   plotOutput("animation_plot")
-)
+  #tags$video(id = "animation_video", type = "video/mp4", src = "animation.mp4", controls = "controls")
+  #uiOutput("video")
+) 
 
 # Define UI for application that draws a figure
 ui <- dashboardPage(

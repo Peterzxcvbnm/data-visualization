@@ -7,6 +7,7 @@ library(shadowtext)
 library(tidyverse)
 library(gganimate)
 library(gifski)
+library(av)
 
 # loading the data
 data <- read.csv("data.csv", sep = ",")
@@ -312,24 +313,27 @@ server <- function(input, output) {
       transition_reveal(intervalIndex) +
       coord_cartesian(clip = 'off') + 
       labs(title = paste(input$animation_y_value, ' through time - victory vs. defeat'), x = 'Game duration [min.]', y = input$animation_y_value) + 
-      theme_minimal() +
-      view_follow()
+      theme_minimal()
     
     values$animation_plot_value <- plot
   })
   
   output$animation_plot = renderImage({
+    #animation <- animate(values$animation_plot_value, duration = 15, fps = 5, end_pause = 25, renderer = av_renderer(), width = 1000, height = 400)
+    #anim_save('animation.mp4', animation)
+    #tags$video(src = "animation.mp4", type = "video/mp4", autoplay = NA, controls = NA)
     if (is.null(values$animation_plot_value)) {
       list()
     }
     else {
-      animation <- animate(values$animation_plot_value, duration = 15, fps = 5, end_pause = 25, renderer = gifski_renderer())
+      animation <- animate(values$animation_plot_value, duration = 15, fps = 5, end_pause = 25, renderer = gifski_renderer(), width = 1000, height = 400)
+      #outfile <- tempfile(fileext = '.mp4')
       outfile <- tempfile(fileext = '.gif')
-      anim_save('outfile.gif', animation)
-      #save_animation(animation, 'outfile.gif')
-      list(src = 'outfile.gif',
-           contentType = 'image/gif'
-      )
+      anim_save('animation.gif', animation)
+      #anim_save('animation.mp4', animation)
+      #tags$animation_video(src = "animation.mp4", type = "video/mp4", controls = "controls")
+      #list(src = 'animation.mp4')
+      list(src = 'animation.gif')
     }
-  }, deleteFile = TRUE)
+  })
 }
