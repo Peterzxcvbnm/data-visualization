@@ -152,18 +152,14 @@ server <- function(input, output) {
     plot(data_frame$gameDuration, data_frame$visionScore,
          ylab = "visionScore",
          xlab = "Game Duration",
-         main = "Game Duration to VisionScore",
-         col.lab = "darkgreen", col.main = "darkgreen",
-         col.axis = "darkgreen")
+         main = "Game Duration to VisionScore")
     abline(reg = lm(data_frame$visionScore ~ data_frame$gameDuration), col = "blue")
   })
   output$gameDuration_to_deaths = renderPlot({
     plot(data_frame$gameDuration, data_frame$deaths,
          ylab = "Deaths",
          xlab = "Game Duration",
-         main = "Game Duration to deaths",
-         col.lab = "darkgreen", col.main = "darkgreen",
-         col.axis = "darkgreen")
+         main = "Game Duration to deaths")
     abline(reg = lm(data_frame$deaths ~ data_frame$gameDuration), col = "blue")
   })  
   output$best_champion_pick = renderPlot({
