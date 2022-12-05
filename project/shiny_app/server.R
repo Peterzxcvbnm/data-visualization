@@ -80,6 +80,7 @@ server <- function(input, output) {
       filter(teamPosition %in% input$positions_selected)
 
     ggplot(data, aes(x = visionScore, group = win, fill = win)) +
+      labs(title = "Vision score density by win/loss", x = "Vision score", y = "Density") +
       geom_density(adjust = 1.5, alpha = .4)
   })
 
@@ -126,7 +127,7 @@ server <- function(input, output) {
 
 
     qplot(data$visionScoreDiff, data$winrate, group = 1, geom=c("point", "line"),
-        xlab = "visionScoreDiff",
+        xlab = "Difference in vision score",
         ylab = "Winrate",
         main = "Winrate by vision score diff")
   })
@@ -145,7 +146,7 @@ server <- function(input, output) {
     
     
     qplot(data_frame_deaths$visionScoreDiff, data_frame_deaths$deaths, group = 1, geom=c("point", "line"),
-          xlab = "visionScoreDiff",
+          xlab = "Vision score difference",
           ylab = "Deaths",
           main = "Deaths by vision score diff",
     )
@@ -154,18 +155,14 @@ server <- function(input, output) {
     plot(data_frame$gameDuration, data_frame$visionScore,
          ylab = "visionScore",
          xlab = "Game Duration",
-         main = "Game Duration to VisionScore",
-         col.lab = "darkgreen", col.main = "darkgreen",
-         col.axis = "darkgreen")
+         main = "Game Duration to VisionScore")
     abline(reg = lm(data_frame$visionScore ~ data_frame$gameDuration), col = "blue")
   })
   output$gameDuration_to_deaths = renderPlot({
     plot(data_frame$gameDuration, data_frame$deaths,
          ylab = "Deaths",
          xlab = "Game Duration",
-         main = "Game Duration to deaths",
-         col.lab = "darkgreen", col.main = "darkgreen",
-         col.axis = "darkgreen")
+         main = "Game Duration to deaths")
     abline(reg = lm(data_frame$deaths ~ data_frame$gameDuration), col = "blue")
   })
   
@@ -252,6 +249,8 @@ server <- function(input, output) {
     data_frame = data_frame %>%
       filter(teamPosition != "")
     data_frame$teamPosition = factor(data_frame$teamPosition, levels = c("TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY"))
+    data_frame = data_frame %>%
+      filter(teamPosition %in% input$positions_selected)
     ggplot(data_frame, aes(x = teamPosition, y = wardsKilled, fill=win)) +
       geom_violin(position = position_dodge(1)) +
       labs(title = "Wards killed", x = "Wards killed", y = "Count") + # nolint
@@ -263,6 +262,8 @@ server <- function(input, output) {
     data_frame = data_frame %>%
       filter(teamPosition != "")
     data_frame$teamPosition = factor(data_frame$teamPosition, levels = c("TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY"))
+    data_frame = data_frame %>%
+      filter(teamPosition %in% input$positions_selected)
     ggplot(data_frame, aes(x = teamPosition, y = wardsPlaced, fill=win)) +
       geom_violin(position = position_dodge(1)) +
       labs(title = "Wards placed", x = "Wards placed", y = "Count") + # nolint
