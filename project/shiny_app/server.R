@@ -127,9 +127,9 @@ server <- function(input, output) {
 
 
     qplot(data$visionScoreDiff, data$winrate, group = 1, geom=c("point", "line"),
-        xlab = "1.2 Difference in vision score",
+        xlab = "Difference in vision score",
         ylab = "Winrate",
-        main = "Winrate by vision score diff")
+        main = "1.2 Winrate by vision score diff")
   })
   
   output$vision_score_by_deaths = renderPlot({
@@ -146,9 +146,9 @@ server <- function(input, output) {
     
     
     qplot(data_frame_deaths$visionScoreDiff, data_frame_deaths$deaths, group = 1, geom=c("point", "line"),
-          xlab = "1.5 Vision score difference",
+          xlab = "Vision score difference",
           ylab = "Deaths",
-          main = "Deaths by vision score diff",
+          main = "1.5 Deaths by vision score diff",
     )
   })
   output$gameDuration_to_visionScore = renderPlot({
