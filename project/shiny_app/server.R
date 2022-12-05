@@ -323,9 +323,8 @@ server <- function(input, output) {
       transition_reveal(intervalIndex) +
       coord_cartesian(clip = 'off') + 
       labs(title = paste("3 ", input$animation_y_value, ' through time - victory vs. defeat'), x = 'Game duration [min.]', y = input$animation_y_value) + 
-      theme_minimal() +
-      view_follow()
-    
+      theme_minimal()
+
     values$animation_plot_value <- plot
   })
   
@@ -346,5 +345,5 @@ server <- function(input, output) {
       #list(src = 'animation.mp4')
       list(src = 'animation.gif')
     }
-  })
+  }, deleteFile = TRUE)
 }
