@@ -240,6 +240,8 @@ server <- function(input, output) {
     data_frame = data_frame %>%
       filter(teamPosition != "")
     data_frame$teamPosition = factor(data_frame$teamPosition, levels = c("TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY"))
+    data_frame = data_frame %>%
+      filter(teamPosition %in% input$positions_selected)
     ggplot(data_frame, aes(x = teamPosition, y = wardsKilled, fill=win)) +
       geom_violin(position = position_dodge(1)) +
       labs(title = "Wards killed", x = "Wards killed", y = "Count") + # nolint
@@ -251,6 +253,8 @@ server <- function(input, output) {
     data_frame = data_frame %>%
       filter(teamPosition != "")
     data_frame$teamPosition = factor(data_frame$teamPosition, levels = c("TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY"))
+    data_frame = data_frame %>%
+      filter(teamPosition %in% input$positions_selected)
     ggplot(data_frame, aes(x = teamPosition, y = wardsPlaced, fill=win)) +
       geom_violin(position = position_dodge(1)) +
       labs(title = "Wards placed", x = "Wards placed", y = "Count") + # nolint
