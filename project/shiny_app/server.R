@@ -7,6 +7,7 @@ library(shadowtext)
 library(tidyverse)
 library(gganimate)
 library(gifski)
+library(plotly)
 
 # loading the data
 data <- read.csv("data.csv", sep = ",")
@@ -26,12 +27,14 @@ make_lane_graph <- function(df, color, title) {
   )
   
   x_breaks = c(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0)
-  
-  ggplot(data) +
-            geom_col(aes(winRate, name), fill = color, width = 0.5, position = position_dodge(0.7)) +
+
+  ggplotly(
+    ggplot(data) +
+            geom_col(aes(winRate, name), fill = color, width = 0.5) +
             labs(title = title, x = "WIN RATE", y = "CHAMPIONS") +
             theme(axis.title = element_text(size = 20), axis.text = element_text(size = 14)) + 
             scale_x_continuous(breaks=x_breaks, labels=x_breaks,limits=c(0.0,1.0))
+  )
   }
 
 server <- function(input, output) {
@@ -164,8 +167,9 @@ server <- function(input, output) {
          col.lab = "darkgreen", col.main = "darkgreen",
          col.axis = "darkgreen")
     abline(reg = lm(data_frame$deaths ~ data_frame$gameDuration), col = "blue")
-  })  
-  output$best_champion_pick = renderPlot({
+  })
+  
+  output$best_champion_pick = renderPlotly({
     championVariable = input$champion_pick
     teamPositionVariable = input$champion_pick_lane
   
@@ -189,41 +193,46 @@ server <- function(input, output) {
       name = factor(df_grouped$championName, levels = df_grouped$championName)
     )
     
-    ggplot(graph_data) +
+    x_breaks = c(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0)
+    
+    ggplotly(
+      ggplot(graph_data) +
       geom_col(aes(winRate, name), width = 0.5) +
       labs(title = paste(championVariable, teamPositionVariable, "Win Rate", sep = " "), x = "WIN RATE", y = "CHAMPIONS") +
-      theme(axis.title = element_text(size = 20))
-  })
+      theme(axis.title = element_text(size = 20), axis.text = element_text(size = 14)) + 
+      scale_x_continuous(breaks=x_breaks, labels=x_breaks,limits=c(0.0,1.0))
+      )
+    })
   
-  output$top_champion_winrate = renderPlot({
+  output$top_champion_pick = renderPlotly({
     df <- as.data.frame(data)
     df$win <- as.logical(df$win)
     topDf <- df[df$teamPosition == "TOP",]
     make_lane_graph(topDf, "#1338BE", "TOP WIN RATE")
   })
   
-  output$jungle_champion_winrate = renderPlot({
+  output$jungle_champion_pick = renderPlotly({
     df <- as.data.frame(data)
     df$win <- as.logical(df$win)
     jungleDf <- df[df$teamPosition == "JUNGLE",]
     make_lane_graph(jungleDf, "#048243", "JUNGLE WIN RATE")
   })
   
-  output$middle_champion_winrate = renderPlot({
+  output$middle_champion_pick = renderPlotly({
     df <- as.data.frame(data)
     df$win <- as.logical(df$win)
     middleDf <- df[df$teamPosition == "MIDDLE",]
     make_lane_graph(middleDf, "#C21807", "MIDDLE WIN RATE")
   })
   
-  output$bottom_champion_winrate = renderPlot({
+  output$bottom_champion_pick = renderPlotly({
     df <- as.data.frame(data)
     df$win <- as.logical(df$win)
     bottomDf <- df[df$teamPosition == "BOTTOM",]
     make_lane_graph(bottomDf, "#5a3d46", "BOTTOM WIN RATE")
   })
   
-  output$utility_champion_winrate = renderPlot({
+  output$utility_champion_pick = renderPlotly({
     df <- as.data.frame(data)
     df$win <- as.logical(df$win)
     supportDf <- df[df$teamPosition == "UTILITY",]

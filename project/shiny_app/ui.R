@@ -72,10 +72,6 @@ championsPage = fluidPage(titlePanel("Champions"),
                                 multiple = FALSE,
                                 selected = c("TOP")
                               ),
-                              #textInput("champion_pick",
-                              #          "Champion:",
-                              #          "Aatrox"
-                              #),
                               selectInput(
                                 "champion_pick",
                                 "Champion:",
@@ -108,12 +104,12 @@ championsPage = fluidPage(titlePanel("Champions"),
                             mainPanel(
                               tabsetPanel(
                                 type = "tabs",
-                                tabPanel("Best champion", plotOutput("best_champion_pick")),
-                                tabPanel("Top", plotOutput("top_champion_pick")),
-                                tabPanel("Jungle", plotOutput("jungle_champion_pick")),
-                                tabPanel("Middle", plotOutput("middle_champion_pick")),
-                                tabPanel("Bottom", plotOutput("bottom_champion_pick")),
-                                tabPanel("Utility", plotOutput("utility_champion_pick"))
+                                tabPanel("Best champion", plotlyOutput("best_champion_pick", width = "600px", height = "750px")),
+                                tabPanel("Top", plotlyOutput("top_champion_pick", height = "1000px", width = "600px")),
+                                tabPanel("Jungle", plotlyOutput("jungle_champion_pick", height = "1000px", width = "600px")),
+                                tabPanel("Middle", plotlyOutput("middle_champion_pick", height = "1000px", width = "600px")),
+                                tabPanel("Bottom", plotlyOutput("bottom_champion_pick", height = "1000px", width = "600px")),
+                                tabPanel("Utility", plotlyOutput("utility_champion_pick", height = "1000px", width = "600px"))
                               )
                             )
                           ))
