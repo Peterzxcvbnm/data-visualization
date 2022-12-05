@@ -41,10 +41,8 @@ qplot(data_frame_deaths$visionScoreDiff, data_frame_deaths$deaths, group = 1, ge
 plot(data_frame$gameDuration, data_frame$visionScore,
      ylab = "visionScore",
      xlab = "Game Duration",
-     main = "Game Duration to VisionScore",
-     col.lab = "darkgreen", col.main = "darkgreen",
-     col.axis = "darkgreen")
-abline(reg = lm(data_frame$visionScore ~ data_frame$gameDuration), col = "blue")
+     main = "Game Duration to VisionScore", col = alpha("gray", 0.5))
+abline(reg = lm(data_frame$visionScore ~ data_frame$gameDuration), col = "red")
 
 
 
@@ -53,8 +51,6 @@ abline(reg = lm(data_frame$visionScore ~ data_frame$gameDuration), col = "blue")
 plot(data_frame$gameDuration, data_frame$deaths,
      ylab = "Deaths",
      xlab = "Game Duration",
-     main = "Game Duration to deaths",
-     col.lab = "darkgreen", col.main = "darkgreen",
-     col.axis = "darkgreen")
-abline(reg = lm(data_frame$deaths ~ data_frame$gameDuration), col = "blue")
+     main = "Game Duration to deaths", col = alpha("gray", 0.5))
+abline(reg = lm(data_frame$deaths ~ data_frame$gameDuration), col = "red")
 
