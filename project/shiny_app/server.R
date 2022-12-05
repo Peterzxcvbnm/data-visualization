@@ -77,6 +77,7 @@ server <- function(input, output) {
       filter(teamPosition %in% input$positions_selected)
 
     ggplot(data, aes(x = visionScore, group = win, fill = win)) +
+      labs(title = "Vision score density by win/loss", x = "Vision score", y = "Density") +
       geom_density(adjust = 1.5, alpha = .4)
   })
 
@@ -123,7 +124,7 @@ server <- function(input, output) {
 
 
     qplot(data$visionScoreDiff, data$winrate, group = 1, geom=c("point", "line"),
-        xlab = "visionScoreDiff",
+        xlab = "Difference in vision score",
         ylab = "Winrate",
         main = "Winrate by vision score diff")
   })
@@ -142,7 +143,7 @@ server <- function(input, output) {
     
     
     qplot(data_frame_deaths$visionScoreDiff, data_frame_deaths$deaths, group = 1, geom=c("point", "line"),
-          xlab = "visionScoreDiff",
+          xlab = "Vision score difference",
           ylab = "Deaths",
           main = "Deaths by vision score diff",
     )
