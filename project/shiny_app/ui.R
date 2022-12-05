@@ -11,6 +11,10 @@ introductionPage = fluidPage(titlePanel("Introduction"),
                              h5("Peter Andreas Brændgaard - pebra18@student.sdu.dk"),
                              h5("Troels Zink Kristensen - tkris17@student.sdu.dk"),
                              
+                             h3("Project Guidelines"),
+                             h5("The project guidelines can be downloaded below."),
+                             downloadButton("download_project_guidelines", "Download project guidelines"),
+                             
                              h3("Dataset"),
                              h5("The used dataset origins from Riot Developer Portal:"), a("Riot API", href="https://developer.riotgames.com/apis#match-v5/GET_getMatch"),
                              h5("The original dataset has been reduced to contain less variables for simplicity of the project."),

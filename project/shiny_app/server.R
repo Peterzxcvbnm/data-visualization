@@ -40,6 +40,16 @@ make_lane_graph <- function(df, color, title) {
 
 server <- function(input, output) {
   # DOWNLOAD BUTTONS
+  output$download_project_guidelines <- downloadHandler(
+    filename <- function() {
+      paste("project-guidelines", "pdf", sep=".")
+    },
+    
+    content <- function(file) {
+      file.copy("project.pdf", file)
+    }
+  )
+  
   output$download_dataset <- downloadHandler(
     filename <- function() {
       paste("data", "csv", sep=".")
