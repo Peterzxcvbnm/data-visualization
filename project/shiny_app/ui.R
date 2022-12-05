@@ -1,6 +1,7 @@
 # libraries
 library(shiny)
 library(shinydashboard)
+library(plotly)
 
 introductionPage = fluidPage(titlePanel("Introduction"),
                              h5("Data Visualization (SM-DV) - Autumn 2022"),
