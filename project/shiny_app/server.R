@@ -305,6 +305,7 @@ server <- function(input, output) {
                 win = win[1],
                 totalMinionsKilled = sum(totalMinionsKilled))
     
+    print(data_animation)
     data_animation <- data_animation %>% arrange(gameDuration)
     
     # making intervals    
@@ -339,20 +340,13 @@ server <- function(input, output) {
   })
   
   output$animation_plot = renderImage({
-    #animation <- animate(values$animation_plot_value, duration = 15, fps = 5, end_pause = 25, renderer = av_renderer(), width = 1000, height = 400)
-    #anim_save('animation.mp4', animation)
-    #tags$video(src = "animation.mp4", type = "video/mp4", autoplay = NA, controls = NA)
     if (is.null(values$animation_plot_value)) {
       list()
     }
     else {
       animation <- animate(values$animation_plot_value, duration = 15, fps = 5, end_pause = 25, renderer = gifski_renderer(), width = 1000, height = 400)
-      #outfile <- tempfile(fileext = '.mp4')
       outfile <- tempfile(fileext = '.gif')
       anim_save('animation.gif', animation)
-      #anim_save('animation.mp4', animation)
-      #tags$animation_video(src = "animation.mp4", type = "video/mp4", controls = "controls")
-      #list(src = 'animation.mp4')
       list(src = 'animation.gif')
     }
   }, deleteFile = TRUE)

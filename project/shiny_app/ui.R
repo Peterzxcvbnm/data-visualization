@@ -68,11 +68,14 @@ visionPage = fluidPage(# App title ----
 
 championsPage = fluidPage(titlePanel("Champions"),
                           
+                          h5("Pick a lane (team position) and a corresponding champion."),
+                          h5("OBS: Some champions have no data for specific lanes."),
+                          
                           sidebarLayout(
                             sidebarPanel(
                               selectInput(
                                 "champion_pick_lane",
-                                "Lane:",
+                                "Lane / Team position:",
                                 c("TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY"),
                                 multiple = FALSE,
                                 selected = c("TOP")
@@ -133,10 +136,10 @@ animationPage = fluidPage(
       "goldEarned",
       "kills",
       "totalDamageDealt",
+      "totalMinionsKilled",
       "visionScore",
       "wardsKilled",
-      "wardsPlaced",
-      "totalMinionsKilled"
+      "wardsPlaced"
     ),
     multiple = FALSE,
     selected = c("assists")
@@ -154,8 +157,36 @@ animationPage = fluidPage(
   plotOutput("animation_plot")
   #tags$video(id = "animation_video", type = "video/mp4", src = "animation.mp4", controls = "controls")
   #uiOutput("video")
-) 
+)
 
+conclusionPage = fluidPage(
+  titlePanel("Conclusion"),
+  
+  h3("Summary"),
+  h5("League of Legends (abbr. LoL) is an online competitive game with a massive player base."),
+  h5("With its competitive nature and high stakes in both amateur and professional tournaments, a competitive edge is crucial."),
+  h5("This data can be visualized, providing players with a quick overview of the most important factors contributing to a victory."),
+  h5("The data was collected using Riot's API and with it, an investigation was launched into the following question:"),
+  br(),
+  
+  h4("Which variables are most important to examine in order to maximize the probability to win a game in League of Legends?"),
+  br(),
+  h5("15 out of hundreds of variables were chosen and examined."),
+  h5("These were things such as 'champion', 'deaths', 'wards killed', etc."),
+  h5("From them, graphs of different kinds were created and it was found that vision score had quite a significant effect."),
+  h5("The bigger the difference in overall vision scores the larger chance for a victory up towards 80% win rate."),
+  h5("Another important variable that was found was the champion pick against a specific opponent."),
+  h5("If you are able to pick a champion that directly counters the opponent you have a significant win rate boost."),
+  h5("Furthermore, a different type of graph was made. An animation plot which plots all the 15 variables."),
+  h5("Here the variable 'Minions Killed' as it was expected it would be very important for win rate, but it proved only to be the case early on."),
+  h5("As soon as the game exceeded 15 minutes, it evened out and did not matter very much."),
+  h5("Other variables you would expect such as deaths, kills etc. were also of great significance of course."),
+  
+  h3("Challenges"),
+  h5("The limited number of records due to CPU constraints has had the impact that the graphs do not represent reality completely."),
+  h5("However, the graphs themselves work as intended and it is merely a question of CPU power available to render them with more realistic data.")
+)
+  
 # Define UI for application that draws a figure
 ui <- dashboardPage(
   # Application title
@@ -175,7 +206,7 @@ ui <- dashboardPage(
     tabItem(tabName = "vision", visionPage),
     tabItem(tabName = "champions", championsPage),
     tabItem(tabName = "animation", animationPage),
-    tabItem(tabName = "conclusion", h3("Conclusion"))
+    tabItem(tabName = "conclusion", conclusionPage)
     )
   )
 )
