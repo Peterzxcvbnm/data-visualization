@@ -107,6 +107,9 @@ championsPage = fluidPage(titlePanel("Champions"),
                                 multiple = FALSE,
                                 selected = c("TOP")
                               ),
+                              
+                              tableOutput("table_champions"),
+                              
                             ),
                             
                             mainPanel(
@@ -120,7 +123,8 @@ championsPage = fluidPage(titlePanel("Champions"),
                                 tabPanel("Utility", plotlyOutput("utility_champion_pick", height = "1000px", width = "600px"))
                               )
                             )
-                          ))
+                          )
+                        )
 
 animationPage = fluidPage(
   titlePanel("Animation"),

@@ -282,6 +282,25 @@ server <- function(input, output) {
       geom_boxplot(width=0.25, position = position_dodge(1))
   })
   
+  output$table_champions <- renderTable({
+    list_of_champions <- data_frame %>%
+      mutate(top = ifelse(teamPosition == "TOP", "Yes", "No"),
+             jungle = ifelse(teamPosition == "JUNGLE", "Yes", "No"),
+             middle = ifelse(teamPosition == "MIDDLE", "Yes", "No"),
+             bottom = ifelse(teamPosition == "BOTTOM", "Yes", "No"),
+             utility = ifelse(teamPosition == "UTILITY", "Yes", "No"))
+
+    list_of_champions <- list_of_champions %>%
+      group_by(championName) %>%
+      summarise(Top = any(top == "Yes"),
+                Jungle = any(jungle == "Yes"),
+                Middle = any(middle == "Yes"),
+                Bottom = any(bottom == "Yes"),
+                Utility = any(utility == "Yes"))
+    
+    list_of_champions
+  })
+  
   # Value to save the animation plot in
   values <- reactiveValues(animation_plot_value = NULL)
   
