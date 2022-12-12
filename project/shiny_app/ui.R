@@ -167,7 +167,7 @@ conclusionPage = fluidPage(
   titlePanel("Conclusion"),
   
   h3("Summary"),
-  h5("League of Legends (abbr. LoL) is an online competitive game with a massive player base."),
+  h5("League of Legends (LoL) is an online competitive game with a massive player base."),
   h5("With its competitive nature and high stakes in both amateur and professional tournaments, a competitive edge is crucial."),
   h5("This data can be visualized, providing players with a quick overview of the most important factors contributing to a victory."),
   h5("The data was collected using Riot's API and with it, an investigation was launched into the following question:"),
@@ -184,11 +184,7 @@ conclusionPage = fluidPage(
   h5("Furthermore, a different type of graph was made. An animation plot which plots all the 15 variables."),
   h5("Here the variable 'Minions Killed' as it was expected it would be very important for win rate, but it proved only to be the case early on."),
   h5("As soon as the game exceeded 15 minutes, it evened out and did not matter very much."),
-  h5("Other variables you would expect such as deaths, kills etc. were also of great significance of course."),
-  
-  h3("Challenges"),
-  h5("The limited number of records due to CPU constraints has had the impact that the graphs do not represent reality completely."),
-  h5("However, the graphs themselves work as intended and it is merely a question of CPU power available to render them with more realistic data.")
+  h5("Other variables you would expect such as deaths, kills etc. were also of great significance of course.")
 )
   
 # Define UI for application that draws a figure
