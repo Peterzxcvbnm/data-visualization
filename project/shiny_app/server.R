@@ -344,7 +344,6 @@ server <- function(input, output) {
     last_value <- data_animation[nrow(data_animation), 1]
     
     # The animation
-    # https://stackoverflow.com/questions/53092216/any-way-to-pause-at-specific-frames-time-points-with-transition-reveal-in-gganim/53093389
     plot <- ggplot(data_animation, aes(x = intervalIndex, y = !!sym(input$animation_y_value), group = win, color = win)) + 
       geom_line() + 
       geom_segment(aes(xend = as.integer(last_value), yend = !!sym(input$animation_y_value)), linetype = 2, colour = 'grey') + 

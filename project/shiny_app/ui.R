@@ -159,32 +159,39 @@ animationPage = fluidPage(
   actionButton(inputId = "submit_animation", label = "Generate animation"),
   br(),
   plotOutput("animation_plot")
-  #tags$video(id = "animation_video", type = "video/mp4", src = "animation.mp4", controls = "controls")
-  #uiOutput("video")
 )
 
 conclusionPage = fluidPage(
   titlePanel("Conclusion"),
   
-  h3("Summary"),
   h5("League of Legends (LoL) is an online competitive game with a massive player base."),
   h5("With its competitive nature and high stakes in both amateur and professional tournaments, a competitive edge is crucial."),
-  h5("This data can be visualized, providing players with a quick overview of the most important factors contributing to a victory."),
-  h5("The data was collected using Riot's API and with it, an investigation was launched into the following question:"),
+  h5("This edge can be gained by utilizing data visualization."),
+  h5("Providing players with a quick overview of the most important factors contributing to a victory."),
+  h5("The data was collected using Riot's API, and with it an investigation was launched into answering the following question:"),
   br(),
   
   h4("Which variables are most important to examine in order to maximize the probability to win a game in League of Legends?"),
   br(),
   h5("15 out of hundreds of variables were chosen and examined."),
-  h5("These were things such as 'champion', 'deaths', 'wards killed', etc."),
-  h5("From them, graphs of different kinds were created and it was found that vision score had quite a significant effect."),
-  h5("The bigger the difference in overall vision scores the larger chance for a victory up towards 80% win rate."),
+  h5("These were things such as 'championName', 'deaths', 'wards killed', etc."),
+  h5("From them, graphs of different types were created."),
+  h5("One density plot, two line plots, two scatter plots, two violin plots, two box plots, six bar charts and one animation plot were created to properly investigate and visualize the data."),
+  h5("It was done in the programming language R."),
+  
+  h5("From these graphs, a few different results were found. Vision score had quite a significant effect."),
+  h5("The bigger the difference in overall vision scores, the larger chance for a victory up towards 80% win rate."),
   h5("Another important variable that was found was the champion pick against a specific opponent."),
   h5("If you are able to pick a champion that directly counters the opponent you have a significant win rate boost."),
-  h5("Furthermore, a different type of graph was made. An animation plot which plots all the 15 variables."),
-  h5("Here the variable 'Minions Killed' as it was expected it would be very important for win rate, but it proved only to be the case early on."),
-  h5("As soon as the game exceeded 15 minutes, it evened out and did not matter very much."),
-  h5("Other variables you would expect such as deaths, kills etc. were also of great significance of course.")
+  h5("An interesting observation came when looking into the variable 'deaths'. Visualizing it gave some unpredictable results."),
+  h5("This was because long-lasting games in general had more deaths, and so, the data visualization would be more focused on long-lasting games vs. short games."),
+  h5("Therefore, it had nothing to do with deaths."),
+  h5("Here it would have been necessary to divide the games up into intervals to make sure games of equal lengths were compared."),
+  
+  h5("Furthermore, a different type of graph was made. An animation plot which plots nine of the 15 variables individually."),
+  h5("When plotting the variable 'minions killed', it was expected to be very important for the win rate, but it proved only to be the case in early game."),
+  h5("As soon as the game reached late game, it evened out and did not matter as much."),
+  h5("Other variables such as deaths, kills etc. were also of great significance, as one would expect.")
 )
   
 # Define UI for application that draws a figure
