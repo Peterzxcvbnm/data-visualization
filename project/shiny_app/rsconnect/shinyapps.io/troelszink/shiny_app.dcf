@@ -5,9 +5,16 @@ account: troelszink
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 7862958
+<<<<<<< HEAD
 bundleId: 6626981
 url: https://troelszink.shinyapps.io/shiny_app/
 when: 1670850701.96169
 lastSyncTime: 1670850701.9617
+=======
+bundleId: 6631168
+url: https://troelszink.shinyapps.io/shiny_app/
+when: 1670928790.40368
+lastSyncTime: 1670928790.4037
+>>>>>>> 5ec02d6 (updated)
 asMultiple: FALSE
 asStatic: FALSE
